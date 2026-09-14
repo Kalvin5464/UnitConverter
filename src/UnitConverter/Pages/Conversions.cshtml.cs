@@ -14,7 +14,7 @@ public class ConversionsModel : PageModel
     {
         Input = "3.1415";
         ViewData["ConversionType"] = "Miles to Kilometers";
-        ViewData["Title"] = "Conversion";
+        ViewData["Title"] = "Conversions";
         double Miles = Convert.ToDouble(Input);
         double Kilometers = new Length().FromMiles(Miles).ToKilometers();
         Output = Kilometers.ToString();
