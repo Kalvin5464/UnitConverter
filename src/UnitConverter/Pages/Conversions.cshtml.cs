@@ -65,8 +65,8 @@ public class ConversionsModel : PageModel
         if (result is null)
         {
             ViewData["ErrorMessage"] = "Unknown Conversion type error";
+            return;
         }
-
         Output = result.Value.ToString();
         //     Input = "3.1415";
         //     ViewData["ConversionType"] = "Miles to Kilometers";
