@@ -3,8 +3,26 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="display-4">Welcome</h1>
+<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<form method="get" action="/Conversions">
+
+    <div class="mb-3">
+        <label for="conversionType" class="form-label">Conversion Type</label>
+        <select id="conversionType" name="Conversion.ConversionType" class="form-select">
+            @foreach (var conversion in UnitConverter.Pages.ConversionTypes.All)
+            {
+
+                <option value="@conversion.Key">@conversion.Value</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="input " class="form-label">Value/Values to convert </label>
+        <input id="input" name="Conversion.Input" type="text" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">CONVERT!</button>
+</form>

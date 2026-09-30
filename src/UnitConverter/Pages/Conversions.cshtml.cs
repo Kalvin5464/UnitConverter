@@ -4,23 +4,51 @@ using UnitOf;
 
 namespace UnitConverter.Pages;
 
+
 public class ConversionsModel : PageModel
 {
-    [BindProperty(SupportsGet = true)] public string ConversionType { get; set; } = string.Empty;
+    [BindProperty(SupportsGet = true)]
+    public ConversionModel Conversion { get; set; } = new();
 
-    [BindProperty(SupportsGet = true)] public string Input { get; set; } = string.Empty;
-    public string Output { get; set; } = string.Empty;
+    [BindProperty(SupportsGet = true)]
+    public string ConversionType
+    {
+        get => Conversion.ConversionType;
+        set => Conversion.ConversionType = value;
+        }
 
+    [BindProperty(SupportsGet = true)]
+    public string Input
+    {
+        get => Conversion.Input;
+        set => Conversion.Input = value;
+    }
+
+    public string Output
+    {
+        get => Conversion.Output;
+        set => Conversion.Output = value;
+    }
 
     public void OnGet()
     {
         ViewData["Title"] = "Conversions";
-        ViewData["ConversionType"] = ConversionType;
+
+        if (string.IsNullOrWhiteSpace(Conversion.ConversionType) && string.IsNullOrWhiteSpace(Conversion.Input))
+        {
+            Conversion.ConversionType = ConversionTypes.MilesToKilometers;
+            Conversion.Input = "3.1415";
+            ViewData["ConversionType"] = ConversionTypes.All[ConversionTypes.MilesToKilometers];
+        }
+        else
+        {
+            ViewData["ConversionType"] =  Conversion.ConversionType;
+        }
 
         double value;
         try
         {
-            value = Convert.ToDouble(Input);
+            value = Convert.ToDouble(Conversion.Input);
         }
 
         catch (FormatException)
@@ -33,7 +61,7 @@ public class ConversionsModel : PageModel
         catch (OverflowException)
 
         {
-            ViewData["ErrorMessage"] = "Entered Characters must be a number";
+            ViewData["ErrorMessage"] = "Too large, way too small";
             return;
         }
 
@@ -42,17 +70,17 @@ public class ConversionsModel : PageModel
         try
 
         {
-            result = ConversionType switch
+            result = Conversion.ConversionType switch
 
             {
-                "MilesToKilometers" => new Length().FromMiles(value).ToKilometers(),
-                "KilometersToMiles" => new Length().FromKilometers(value).ToMiles(),
-                "FahrenheitToCelsius" => new Temperature().FromFahrenheit(value).ToCelsius(),
-                "CelsiusToFahrenheit" => new Temperature().FromCelsius(value).ToFahrenheit(),
-                "PoundsToKilograms" => new Mass().FromPounds(value).ToKilograms(),
-                "KilogramsToPounds" => new Mass().FromKilograms(value).ToPounds(),
-                "FeetToMeters" => new Length().FromFeet(value).ToMeters(),
-                "MetersToFeet" => new Length().FromMeters(value).ToFeet(),
+                ConversionTypes.MilesToKilometers => new Length().FromMiles(value).ToKilometers(),
+                ConversionTypes.KilometersToMiles => new Length().FromKilometers(value).ToMiles(),
+                ConversionTypes.FahrenheitToCelsius => new Temperature().FromFahrenheit(value).ToCelsius(),
+                ConversionTypes.CelsiusToFahrenheit => new Temperature().FromCelsius(value).ToFahrenheit(),
+                ConversionTypes.PoundsToKilograms => new Mass().FromPounds(value).ToKilograms(),
+                ConversionTypes.KilogramsToPounds => new Mass().FromKilograms(value).ToPounds(),
+                ConversionTypes.FeetToMeters => new Length().FromFeet(value).ToMeters(),
+                ConversionTypes.MetersToFeet => new Length().FromMeters(value).ToFeet(),
                 _=> null
             };
         }
@@ -67,14 +95,8 @@ public class ConversionsModel : PageModel
             ViewData["ErrorMessage"] = "Unknown Conversion type error";
             return;
         }
-        Output = result.Value.ToString();
-        //     Input = "3.1415";
-        //     ViewData["ConversionType"] = "Miles to Kilometers";
-        //     ViewData["Title"] = "Conversions";
-        //     double Miles = Convert.ToDouble(Input);
-        //     double Kilometers = new Length().FromMiles(Miles).ToKilometers();
-        //     Output = Kilometers.ToString();
-        //
+        Conversion.Output = result.Value.ToString();
+
 
 
     }
