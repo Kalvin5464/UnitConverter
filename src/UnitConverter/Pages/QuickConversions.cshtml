@@ -1,0 +1,46 @@
+﻿@page
+@model UnitConverter.Pages.QuickConversionsModel
+<h1>Quick Conversions</h1>
+
+<form method="get" asp-page-handler="@ConversionTypes.MilesToKilometers">
+    <label for="milesInput" class="form-label">Miles</label>
+    <input id="milesInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Kilometers</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.KilometersToMiles">
+    <label for="kilometersInput" class="form-label">Miles</label>
+    <input id="kilometersInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Miles</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.FeetToMeters">
+    <label for="feetInput" class="form-label">Miles</label>
+    <input id="feetInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Meters</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.MetersToFeet">
+    <label for="metersInput" class="form-label">Miles</label>
+    <input id="metersInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Meters</button>
+</form>
+
+<form method="get" asp-page-handler="@ConversionTypes.FahrenheitToCelsius">
+    <label for="fahrenheitInput" class="form-label">Miles</label>
+    <input id="fahrenheitInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Celsius</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.CelsiusToFahrenheit">
+    <label for="celsiusInput" class="form-label">Miles</label>
+    <input id="celsiusInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Fahrenheit</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.PoundsToKilograms">
+    <label for="poundsInput" class="form-label">Miles</label>
+    <input id="poundsInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Meters</button>
+</form>
+<form method="get" asp-page-handler="@ConversionTypes.KilogramsToPounds">
+    <label for="kilogramsInput" class="form-label">Miles</label>
+    <input id="kilogramsInput" name="input" type="text" class="form-control" />
+    <button type="submit" class="btn btn-primary">Convert to Meters</button>
+</form>
+<a asp-page="/Index"> Return to INDEX</a>
