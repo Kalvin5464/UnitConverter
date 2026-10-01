@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.Mvc.Routing;
 namespace UnitConverter.Pages;
 
 public class QuickConversionsModel : PageModel
 {
-    public IEnumerable<SelectListItem> PoundfOptions =>
+    public IEnumerable<SelectListItem> PoundOptions =>
     [
         new("1 pound", "1"),
         new("5 pounds", "5"),
@@ -57,13 +57,13 @@ public class QuickConversionsModel : PageModel
 
     private IActionResult RedirectToConversion(string conversionType, string input)
     {
-        return RedirectToPage("Conversion", new
+        var routeValues = new RouteValueDictionary
         {
-            Conversion = new
-            {
-                ConversionType = conversionType,
-                Input = input
-            }
-        });
+            { "Conversion.ConversionType", conversionType },
+            { "Conversion.Input", input }
+        };
+
+        return RedirectToPage("/Conversions", routeValues);
     }
 }
+
