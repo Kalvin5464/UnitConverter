@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@using UnitConverter.Models;
 @{
     ViewData["Title"] = "Home page";
 }
@@ -13,7 +14,7 @@
     <div class="mb-3">
         <label for="conversionType" class="form-label">Conversion Type</label>
         <select id="conversionType" name="Conversion.ConversionType" class="form-select">
-            @foreach (var conversion in UnitConverter.Pages.ConversionTypes.All)
+            @foreach (var conversion in UnitConverter.Models.ConversionTypes.All)
             {
 
                 <option value="@conversion.Key">@conversion.Value</option>

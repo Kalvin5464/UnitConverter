@@ -1,4 +1,4 @@
-﻿namespace UnitConverter.Pages;
+﻿namespace UnitConverter.Models;
 
 public static class ConversionTypes
 {
