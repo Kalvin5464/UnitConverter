@@ -1,21 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UnitOf;
 using UnitConverter.Models;
-namespace UnitConverter.Pages;
+using UnitOf;
 
+namespace UnitConverter.Pages;
 
 public class ConversionsModel : PageModel
 {
-    [BindProperty(SupportsGet = true)]
-    public ConversionModel Conversion { get; set; } = new();
+    private readonly ILogger<ConversionsModel> _logger;
+
+    public ConversionsModel(ILogger<ConversionsModel> logger)
+    {
+        _logger = logger;
+    }
+
+    [BindProperty(SupportsGet = true)] public ConversionModel Conversion { get; set; } = new();
 
     [BindProperty(SupportsGet = true)]
     public string ConversionType
     {
         get => Conversion.ConversionType;
         set => Conversion.ConversionType = value;
-        }
+    }
 
     [BindProperty(SupportsGet = true)]
     public string Input
@@ -42,36 +48,42 @@ public class ConversionsModel : PageModel
         }
         else
         {
-            ViewData["ConversionType"] =  Conversion.ConversionType;
+            ViewData["ConversionType"] = Conversion.ConversionType;
         }
+
+        _logger.LogInformation(
+            "Conversion request received for {ConversionType} with input {Input}",
+            Conversion.ConversionType,
+            Conversion.Input);
 
         double value;
         try
         {
             value = Convert.ToDouble(Conversion.Input);
         }
-
         catch (FormatException)
-
         {
+            _logger.LogWarning(
+                "Invalid conversion input {Input} for {ConversionType}",
+                Conversion.Input,
+                Conversion.ConversionType);
             ViewData["ErrorMessage"] = "Entered Characters must be a number";
             return;
         }
-
         catch (OverflowException)
-
         {
+            _logger.LogWarning(
+                "Invalid conversion input {Input} for {ConversionType}",
+                Conversion.Input,
+                Conversion.ConversionType);
             ViewData["ErrorMessage"] = "Too large, way too small";
             return;
         }
 
-
         double? result;
         try
-
         {
             result = Conversion.ConversionType switch
-
             {
                 ConversionTypes.MilesToKilometers => new Length().FromMiles(value).ToKilometers(),
                 ConversionTypes.KilometersToMiles => new Length().FromKilometers(value).ToMiles(),
@@ -81,23 +93,29 @@ public class ConversionsModel : PageModel
                 ConversionTypes.KilogramsToPounds => new Mass().FromKilograms(value).ToPounds(),
                 ConversionTypes.FeetToMeters => new Length().FromFeet(value).ToMeters(),
                 ConversionTypes.MetersToFeet => new Length().FromMeters(value).ToFeet(),
-                _=> null
+                _ => null
             };
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(
+                ex,
+                "Conversion failed for {ConversionType} with input {Input}",
+                Conversion.ConversionType,
+                Conversion.Input);
             ViewData["ErrorMessage"] = "Conversion was unable to be completed";
             return;
         }
 
         if (result is null)
         {
+            _logger.LogWarning(
+                "Unknown conversion type {ConversionType} requested",
+                Conversion.ConversionType);
             ViewData["ErrorMessage"] = "Unknown Conversion type error";
             return;
         }
+
         Conversion.Output = result.Value.ToString();
-
-
-
     }
 }

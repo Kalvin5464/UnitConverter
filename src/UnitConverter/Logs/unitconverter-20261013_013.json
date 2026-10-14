@@ -1,0 +1,2 @@
+{"@t":"2026-10-14T02:54:53.0897957Z","@m":"Executing endpoint '\"/QuickConversions\"'","@i":"500cc934","EndpointName":"/QuickConversions","EventId":{"Name":"ExecutingEndpoint"},"SourceContext":"Microsoft.AspNetCore.Routing.EndpointMiddleware"}
+{"@t":"2026-10-14T02:54:53.1143859Z","@m":"Executed endpoint '\"/QuickConversions\"'","@i":"99874f2b","EndpointName":"/QuickConversions","EventId":{"Id":1,"Name":"ExecutedEndpoint"},"SourceContext":"Microsoft.AspNetCore.Routing.EndpointMiddleware"}
